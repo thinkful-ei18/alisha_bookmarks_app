@@ -14,7 +14,21 @@
     <img class='logo' src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Book_designed_by_Benny_Forsberg_from_the_Noun_Project.svg/768px-Book_designed_by_Benny_Forsberg_from_the_Noun_Project.svg.png' alt='logo' />
     <h1>My Bookmarks</h1>
   </header>
-  <button class='button' type='button'>Add Bookmark</button>
+  <form action='' method='get'>
+    <fieldset>
+      <p>Create a new bookmark:</p>
+        <input type='text' placeholder='Title'>
+        <p>Star rating:</p>
+        <input type='radio' name='rating' value='1 star'> 1 
+        <input type='radio' name='rating' value='2 stars'> 2
+        <input type='radio' name='rating' value='3 stars'> 3
+        <input type='radio' name='rating' value='4 stars'> 4
+        <input type='radio' name='rating' value='5 stars'> 5 <br>
+        <input type='text' placeholder='Description'> <br>
+        <input type='text' placeholder='URL'> <br>
+        <input type='submit'>
+    </fieldset>
+  </form>
   <button class='button' type='button'>Minimum Rating</button>
   <ul class = 'bookmarks'>
     <li>
