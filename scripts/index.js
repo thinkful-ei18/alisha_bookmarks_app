@@ -27,10 +27,10 @@ $(document).ready(function () {
   // domActions.render();
   // call to the API and get the current data. render page inside this function.
   api.retrieveBookmarks((bookmarks) => {
-    store.bookmarksList = store.bookmarksList.concat(bookmarks);
-    // console.log(store.bookmarksList);
-    domActions.generateBookmarkHtml(store.bookmarksList);
+    bookmarks.forEach(bookmark => store.addBookmark(bookmark));
+    domActions.render();
+    // domActions.generateBookmarkHtml(store.bookmarksList);
   });
-  // domActions.render();
+  
   
 });

@@ -1,5 +1,5 @@
 'use strict';
-/* global  */
+/* global  domActions, */
 
 /* 
 
@@ -13,25 +13,34 @@ const store = {
   minRating: false
 }
 
+* the store should not call any functions, it's to be called upon
+
 */
 
 const store = function() {
-
-  const addBookmarks = function() {
+/**
+ * 
+ * @param {object} bookmark 
+ */
+  const addBookmark = function(bookmark) {
     //push bookmarks to the store array from form on dom
+    // console.log(bookmark);
+    bookmark.expanded = false;
+    store.bookmarksList.push(bookmark);
+    // console.log(store.bookmarksList);
   };
 
   const deleteBookmark = function () {
     // remove bookmarks from the store array
   };  
 
-  const expandBookmark = function (item) {
-  
-  };
-
-  const toggleExpanded = function () {
-    // if this is only either true or false, what happens when I expand a bookmark (true) and then try to expand another? (false)?
-    this.expanded = !this.expanded;
+  const expandBookmark = function (clickedBookmark) {
+    if (clickedBookmark.expanded === false) {
+      clickedBookmark.expanded = true;
+    } else {
+      clickedBookmark.expanded = false;
+    }
+    console.log(clickedBookmark.expanded);
   };
 
   const toggleIsAdding = function() {
@@ -46,14 +55,12 @@ const store = function() {
 
   return {
     bookmarksList: [],
-    expanded: false,
     isAdding: false,
     minRating: false,
 
-    addBookmarks,
+    addBookmark,
     deleteBookmark,
     expandBookmark,
-    // toggleExpanded,
     toggleIsAdding,
     // toggleMinRating
   };

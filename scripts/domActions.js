@@ -29,35 +29,34 @@
 const domActions = function() {
 
   const generateBookmarkHtml = function(bookmarksList) {
-    // create each bookmarks' <li> using map
-    let bookmark = bookmarksList.map( item => {
-      return `<li data-item-id='${item.id}'>
-        <p class='expandable'>${item.title}</p>
-        <img src='https://d30y9cdsu7xlg0.cloudfront.net/png/435814-200.png' alt='5 star rating'/>
+    // // create each bookmarks' <li> using map
+
+    let bookmarkHtml = bookmarksList.map(item => {
+      if (item.expanded) {
+        return `<li data-item-id='${item.id}'>
+        <h3 class='expandable'>${item.title}</h3>
+        <p>${ item.rating? item.rating : '' }</p>
+        <p>${ item.desc ? item.desc : '' }</p>
+        <p><a href='${item.url}'>Visit Website</p>
+        <button class='deleteButton' type='button'>Delete bookmark</button>
       </li>`;
-      
+      } else {
+        return `<li data-item-id='${item.id}'>
+        <h3 class='expandable'>${item.title}</h3>
+        <p>Figure out how to convert the rating into an image and how to write the html when the rating or description weren't included!</p>
+      </li>`;
+      }
     });
-       
-    console.log(bookmark);
 
-    if (store.expanded) {
-      
-      bookmark = bookmarksList.find( item => {
-        `<li data-item-id='${item.id}'>
-        <p class='expandable'>${item.title}</p>
-        <img src='https://d30y9cdsu7xlg0.cloudfront.net/png/435814-200.png' alt='5 star rating'/>
-        <p>'${item.desc}'</p>
-        <p>'${item.url}'</p>
-        <button class='deleteButton' type='button'>Delete</button>
-      </li>`;
-      });
-    } 
-
-    render(bookmark);
+    return bookmarkHtml;
   };
 
-  const render = function (bookmark) {
+  const render = function() {
     // render the entire page in whatever state it should be in
+
+    // if (something about the store) {
+    //   do this
+    // }
 
     const addBookmarkButton = '<button class=\'js-add-bookmark-button\' type=\'button\'>Add Bookmark</button>';
     
@@ -73,24 +72,32 @@ const domActions = function() {
             <option value='clear'>Clear Ratings</option>
           </select>`;
       
-    $('.js-buttons').append(addBookmarkButton, minimumRatingSelector);
-    // $('.js-buttons').html(minimumRatingSelector);
-    $('.js-bookmarks').html(bookmark);
+    $('.js-add-min-buttons').html(addBookmarkButton + minimumRatingSelector);
+    let elements = generateBookmarkHtml(store.bookmarksList);
+    $('.js-bookmarks').html(elements);
   };
 
-  const findId = function (id) {
-    // find the id of the clicked item (add button, min rating, expand bookmark, delete)
-    store.bookmarksList.find(item => item.id = id);
+  // const findId = function (id) {
+  //   // find the id of the clicked item (add button, min rating, expand bookmark, delete)
+  //   store.bookmarksList.find(item => item.id = id);
+  // };
+
+  const findBookmarkObject = function (id) {
+    // find the bookmark that matches the id from findID
+    return store.bookmarksList.find(item => item.id === id);
+    // console.log(store.bookmarksList.find(item => item.id = id));
   };
 
   const handleExpandBookmark = function () {
     // toggle expand property on store item and show new view
-    $('.expandable').on('click', event => {
-      // store.toggleExpanded();
-      let id = $(event.currentTarget).closest('li').attr('data-item-id');
+    $('.js-bookmarks').on('click', '.expandable', event => {
+
+      let id = $(event.currentTarget).closest('li').data('item-id');
       console.log(id);
-      findId(id);
-      // how to expand just one bookmark?
+      let clickedBookmark = findBookmarkObject(id);
+      console.log(clickedBookmark);
+      store.expandBookmark(clickedBookmark);
+      render();
     });
   };
 
@@ -126,6 +133,7 @@ const domActions = function() {
   return {
     render,
     allEventListeners,
-    generateBookmarkHtml
+    generateBookmarkHtml, // why does this have to be exposed?
+    findBookmarkObject // why does this have to be exposed?
   };
 }();
