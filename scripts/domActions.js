@@ -59,6 +59,22 @@ const domActions = function() {
     // }
 
     const addBookmarkButton = '<button class=\'js-add-bookmark-button\' type=\'button\'>Add Bookmark</button>';
+
+    const addingBookmarkForm = `<form action='' method='get'>
+    <fieldset>
+      <p>Create a new bookmark:</p>
+        <input type='text' placeholder='Title'>
+        <p>Star rating:</p>
+        <input type='radio' name='rating' value='1 star'> 1 
+        <input type='radio' name='rating' value='2 stars'> 2
+        <input type='radio' name='rating' value='3 stars'> 3
+        <input type='radio' name='rating' value='4 stars'> 4
+        <input type='radio' name='rating' value='5 stars'> 5 <br>
+        <input type='text' placeholder='Description'> <br>
+        <input type='text' placeholder='URL'> <br>
+        <input type='submit'>
+    </fieldset>
+  </form>`;
     
     const minimumRatingSelector = `<form name='minimumRating' action='' method="POST">
         <div>
@@ -72,15 +88,21 @@ const domActions = function() {
             <option value='clear'>Clear Ratings</option>
           </select>`;
       
-    $('.js-add-min-buttons').html(addBookmarkButton + minimumRatingSelector);
-    let elements = generateBookmarkHtml(store.bookmarksList);
-    $('.js-bookmarks').html(elements);
-  };
+    // $('.js-add-min-buttons').html(addBookmarkButton + minimumRatingSelector);
+    const htmlElements = generateBookmarkHtml(store.bookmarksList);
+    // $('.js-bookmarks').html(elements);
 
-  // const findId = function (id) {
-  //   // find the id of the clicked item (add button, min rating, expand bookmark, delete)
-  //   store.bookmarksList.find(item => item.id = id);
-  // };
+
+
+    if (store.isAdding) {
+      $('.js-add-min-buttons').html(addingBookmarkForm + minimumRatingSelector);
+      $('.js-bookmarks').html(htmlElements);
+    } 
+    else {
+      $('.js-add-min-buttons').html(addBookmarkButton + minimumRatingSelector);
+      $('.js-bookmarks').html(htmlElements);
+    }
+  };
 
   const findBookmarkObject = function (id) {
     // find the bookmark that matches the id from findID
@@ -91,24 +113,49 @@ const domActions = function() {
   const handleExpandBookmark = function () {
     // toggle expand property on store item and show new view
     $('.js-bookmarks').on('click', '.expandable', event => {
-
       let id = $(event.currentTarget).closest('li').data('item-id');
-      console.log(id);
+      // console.log(id);
       let clickedBookmark = findBookmarkObject(id);
-      console.log(clickedBookmark);
+      // console.log(clickedBookmark);
       store.expandBookmark(clickedBookmark);
       render();
     });
   };
 
+  // const generateAddBookmarkForm = function() {
+  //   return `<form action='' method='get'>
+  //   <fieldset>
+  //     <p>Create a new bookmark:</p>
+  //       <input type='text' placeholder='Title'>
+  //       <p>Star rating:</p>
+  //       <input type='radio' name='rating' value='1 star'> 1 
+  //       <input type='radio' name='rating' value='2 stars'> 2
+  //       <input type='radio' name='rating' value='3 stars'> 3
+  //       <input type='radio' name='rating' value='4 stars'> 4
+  //       <input type='radio' name='rating' value='5 stars'> 5 <br>
+  //       <input type='text' placeholder='Description'> <br>
+  //       <input type='text' placeholder='URL'> <br>
+  //       <input type='submit'>
+  //   </fieldset>
+  // </form>`;
+  // };
+
   const handleAddingBookmark = function () {
     // listen for when the user is inputting info for a new bookmark and assign input values to store
-    $('');
+    $('.js-add-min-buttons').on('click', '.js-add-bookmark-button', event => {
+      store.toggleIsAdding();
+      console.log(store.isAdding);
+      render();
+
+    });
   };
 
   const handleSubmittedNewBookmark = function () {
     // listen for when the user is submitting info for a new bookmark
-    $('');
+    $('').submit( event => {
+      store.toggleIsAdding();
+      
+    });
   };
 
   const handleSelectingMinimumRating = function () {
@@ -133,7 +180,7 @@ const domActions = function() {
   return {
     render,
     allEventListeners,
-    generateBookmarkHtml, // why does this have to be exposed?
-    findBookmarkObject // why does this have to be exposed?
+    findBookmarkObject
   };
+
 }();
