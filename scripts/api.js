@@ -40,8 +40,15 @@ const api = function() {
     });
   };
 
-  const deleteBookmark = function () {
+  const deleteBookmark = function (id, callback) {
     // DELETE store item from API
+
+    $.ajax({
+      url: `${BASE_URL}/bookmarks/${id}`,
+      method: 'DELETE',
+      success: callback,
+      error: error => console.log(error)
+    });
   };
 
   return {

@@ -37,8 +37,8 @@ const domActions = function() {
         <h3 class='expandable'>${item.title}</h3>
         <p>${ item.rating? item.rating : '' }</p>
         <p>${ item.desc ? item.desc : '' }</p>
-        <p><a href='${item.url}'>Visit Website</p>
-        <button class='deleteButton' type='button'>Delete bookmark</button>
+        <p><a href='${item.url}' target='_blank'>Visit Website</a></p>
+        <button class='js-delete-button' type='button'>Delete bookmark</button>
       </li>`;
       } else {
         return `<li data-item-id='${item.id}'>
@@ -160,7 +160,14 @@ const domActions = function() {
 
   const handleDeleteBookmark = function () {
     //listen for when the user wants to delete a bookmark
-    $('');
+    $('.js-bookmarks').on('click', '.js-delete-button', event => {
+      let deletedId = $(event.currentTarget).closest('li').data('item-id');
+      // console.log(id);
+      api.deleteBookmark(deletedId, () => {
+        store.deleteBookmark(deletedId);
+        render();
+      });
+    });
   };
 
 

@@ -30,8 +30,9 @@ const store = function() {
     // console.log(store.bookmarksList);
   };
 
-  const deleteBookmark = function () {
+  const deleteBookmark = function (deletedId) {
     // remove bookmarks from the store array
+    store.bookmarksList = store.bookmarksList.filter(item => item.id !== deletedId);
   };  
 
   const expandBookmark = function (clickedBookmark) {
@@ -40,7 +41,7 @@ const store = function() {
     } else {
       clickedBookmark.expanded = false;
     }
-    console.log(clickedBookmark.expanded);
+    // console.log(clickedBookmark.expanded);
   };
 
   const toggleIsAdding = function() {
