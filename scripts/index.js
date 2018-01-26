@@ -1,5 +1,5 @@
 'use strict';
-/* global domActions, api */
+/* global domActions, api, store */
 
 /*
 
@@ -8,7 +8,7 @@
   logo
   title
   add bookmark button
-  minimum rating dropdown
+  minimum rating dropdowns
   3-6 bookmarks
   all even listeners
 
@@ -24,6 +24,13 @@
 
 $(document).ready(function () {
   domActions.allEventListeners();
+  // domActions.render();
+  // call to the API and get the current data. render page inside this function.
+  api.retrieveBookmarks((bookmarks) => {
+    store.bookmarksList = store.bookmarksList.concat(bookmarks);
+    // console.log(store.bookmarksList);
+    domActions.generateBookmarkHtml(store.bookmarksList);
+  });
   domActions.render();
   
 });

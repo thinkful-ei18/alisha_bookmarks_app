@@ -1,5 +1,5 @@
 'use strict';
-/* global  */
+/* global store, */
 
 /*
 
@@ -27,54 +27,85 @@
 
 const domActions = function() {
 
-  const generateBookmark = function() {
-    // create each bookmarks <li> 
+  const generateBookmarkHtml = function(bookmarksList) {
+    // create each bookmarks' <li> using map
+    // console.log(bookmarksList);
+
+    let bookmark = bookmarksList.map( item => {
+      // console.log(item);
+      return `<li>
+        <p data-item-id='${item.id}'>${item.title}</p>
+        <img src='https://d30y9cdsu7xlg0.cloudfront.net/png/435814-200.png' alt='5 star rating'/>
+      </li>`;
+      
+    });
+       
+    console.log(bookmark);
+
+    if (store.expanded) {
+      bookmark = bookmarksList.map( item => {
+        `<li id ='${item.id}'>
+        <p>${item.title}</p>
+        <img src='https://d30y9cdsu7xlg0.cloudfront.net/png/435814-200.png' alt='5 star rating'/>
+        <p>'${item.desc}'</p>
+        <p>'${item.url}'</p>
+        <button class='deleteButton' type='button'>Delete</button>
+      </li>`;
+      });
+    } 
+
+    render(bookmark);
   };
 
-  const render = function() {
+  const render = function (bookmark) {
     // render the entire page in whatever state it should be in
+    $('.bookmarks').html(bookmark);
   };
 
-  const findId = function() {
+  const findId = function () {
     // find the id of the clicked item (add button, min rating, expand bookmark, delete)
   };
 
-  const expandBookmark = function() {
+  const handleExpandedBookmark = function () {
     // toggle expand property on store item and show new view
-    $('')
+    $('.bookmarks').on('click', function (event) {
+      event.preventDefault();
+      store.toggleExpanded(event);
+    });
   };
 
-  const selectAddBookmark = function() {
-    // listen for when the user is inputting info for a new bookmark
-    $('')
+  const handleAddingBookmark = function () {
+    // listen for when the user is inputting info for a new bookmark and assign input values to store
+    $('');
   };
 
-  const submitAddNew = function() {
+  const handleSubmittedNewBookmark = function () {
     // listen for when the user is submitting info for a new bookmark
-    $('')
+    $('');
   };
 
-  const selectMinimumRating = function() {
+  const handleSelectingMinimumRating = function () {
     // listen for which min rating the user wants && filter
-    $('')
+    $('');
   };
 
-  const deleteBookmark = function() {
+  const handleDeleteBookmark = function () {
     //listen for when the user wants to delete a bookmark
-
+    $('');
   };
 
 
-  const allEventListeners = function() {
-    expandBookmark();
-    selectAddBookmark();
-    submitAddNew();
-    selectMinimumRating();
-    deleteBookmark();
+  const allEventListeners = function () {
+    handleExpandedBookmark();
+    handleAddingBookmark();
+    handleSubmittedNewBookmark();
+    handleSelectingMinimumRating();
+    handleDeleteBookmark();
   };
 
   return {
     render,
-    allEventListeners
+    allEventListeners,
+    generateBookmarkHtml
   };
 }();
