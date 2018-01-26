@@ -6,6 +6,7 @@
 * listen for when a bookmark is clicked 
   >> determine id of clicked bookmark
   >> render page with expanded bookmark
+  >> include delete button
 
 * listen for when user clicks add bookmark 
   >> listen for form class/id
@@ -29,12 +30,9 @@ const domActions = function() {
 
   const generateBookmarkHtml = function(bookmarksList) {
     // create each bookmarks' <li> using map
-    // console.log(bookmarksList);
-
     let bookmark = bookmarksList.map( item => {
-      // console.log(item);
-      return `<li>
-        <p data-item-id='${item.id}'>${item.title}</p>
+      return `<li data-item-id='${item.id}'>
+        <p class='expandable'>${item.title}</p>
         <img src='https://d30y9cdsu7xlg0.cloudfront.net/png/435814-200.png' alt='5 star rating'/>
       </li>`;
       
@@ -43,9 +41,10 @@ const domActions = function() {
     console.log(bookmark);
 
     if (store.expanded) {
-      bookmark = bookmarksList.map( item => {
-        `<li id ='${item.id}'>
-        <p>${item.title}</p>
+      
+      bookmark = bookmarksList.find( item => {
+        `<li data-item-id='${item.id}'>
+        <p class='expandable'>${item.title}</p>
         <img src='https://d30y9cdsu7xlg0.cloudfront.net/png/435814-200.png' alt='5 star rating'/>
         <p>'${item.desc}'</p>
         <p>'${item.url}'</p>
@@ -59,18 +58,39 @@ const domActions = function() {
 
   const render = function (bookmark) {
     // render the entire page in whatever state it should be in
-    $('.bookmarks').html(bookmark);
+
+    const addBookmarkButton = '<button class=\'js-add-bookmark-button\' type=\'button\'>Add Bookmark</button>';
+    
+    const minimumRatingSelector = `<form name='minimumRating' action='' method="POST">
+        <div>
+          <select>
+            <option value='minRating'>Minimum Rating</option>
+            <option value='1 star'>1 star</option>
+            <option value='2 stars'>2 stars</option>
+            <option value='3 stars'>3 stars</option>
+            <option value='4 stars'>4 stars</option>
+            <option value='5 stars'>5 stars</option>
+            <option value='clear'>Clear Ratings</option>
+          </select>`;
+      
+    $('.js-buttons').append(addBookmarkButton, minimumRatingSelector);
+    // $('.js-buttons').html(minimumRatingSelector);
+    $('.js-bookmarks').html(bookmark);
   };
 
-  const findId = function () {
+  const findId = function (id) {
     // find the id of the clicked item (add button, min rating, expand bookmark, delete)
+    store.bookmarksList.find(item => item.id = id);
   };
 
-  const handleExpandedBookmark = function () {
+  const handleExpandBookmark = function () {
     // toggle expand property on store item and show new view
-    $('.bookmarks').on('click', function (event) {
-      event.preventDefault();
-      store.toggleExpanded(event);
+    $('.expandable').on('click', event => {
+      // store.toggleExpanded();
+      let id = $(event.currentTarget).closest('li').attr('data-item-id');
+      console.log(id);
+      findId(id);
+      // how to expand just one bookmark?
     });
   };
 
@@ -96,7 +116,7 @@ const domActions = function() {
 
 
   const allEventListeners = function () {
-    handleExpandedBookmark();
+    handleExpandBookmark();
     handleAddingBookmark();
     handleSubmittedNewBookmark();
     handleSelectingMinimumRating();

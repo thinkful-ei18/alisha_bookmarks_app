@@ -31,6 +31,6 @@ $(document).ready(function () {
     // console.log(store.bookmarksList);
     domActions.generateBookmarkHtml(store.bookmarksList);
   });
-  domActions.render();
+  // domActions.render();
   
 });

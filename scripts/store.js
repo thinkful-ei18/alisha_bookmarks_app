@@ -17,8 +17,6 @@ const store = {
 
 const store = function() {
 
-  
-
   const addBookmarks = function() {
     //push bookmarks to the store array from form on dom
   };
@@ -27,7 +25,12 @@ const store = function() {
     // remove bookmarks from the store array
   };  
 
+  const expandBookmark = function (item) {
+  
+  };
+
   const toggleExpanded = function () {
+    // if this is only either true or false, what happens when I expand a bookmark (true) and then try to expand another? (false)?
     this.expanded = !this.expanded;
   };
 
@@ -36,6 +39,7 @@ const store = function() {
   };
 
   const toggleMinRating = function() {
+    // no need to toggle
     this.minRating = !this.minRating;
   };
 
@@ -48,9 +52,10 @@ const store = function() {
 
     addBookmarks,
     deleteBookmark,
-    toggleExpanded,
+    expandBookmark,
+    // toggleExpanded,
     toggleIsAdding,
-    toggleMinRating
+    // toggleMinRating
   };
 
 }();
