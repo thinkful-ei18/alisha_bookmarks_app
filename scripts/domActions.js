@@ -1,5 +1,5 @@
 'use strict';
-/* global store, */
+/* global store, api, */
 
 /*
 
@@ -54,24 +54,20 @@ const domActions = function() {
   const render = function() {
     // render the entire page in whatever state it should be in
 
-    // if (something about the store) {
-    //   do this
-    // }
-
     const addBookmarkButton = '<button class=\'js-add-bookmark-button\' type=\'button\'>Add Bookmark</button>';
 
-    const addingBookmarkForm = `<form action='' method='get'>
+    const addingBookmarkForm = `<form>
     <fieldset>
       <p>Create a new bookmark:</p>
-        <input type='text' placeholder='Title'>
+        <input id='js-title' type='text' placeholder='Title'>
         <p>Star rating:</p>
         <input type='radio' name='rating' value='1 star'> 1 
         <input type='radio' name='rating' value='2 stars'> 2
         <input type='radio' name='rating' value='3 stars'> 3
         <input type='radio' name='rating' value='4 stars'> 4
         <input type='radio' name='rating' value='5 stars'> 5 <br>
-        <input type='text' placeholder='Description'> <br>
-        <input type='text' placeholder='URL'> <br>
+        <input id='js-desc' type='text' placeholder='Description'> <br>
+        <input id='js-url' type='text' placeholder='URL'> <br>
         <input type='submit'>
     </fieldset>
   </form>`;
@@ -122,44 +118,43 @@ const domActions = function() {
     });
   };
 
-  // const generateAddBookmarkForm = function() {
-  //   return `<form action='' method='get'>
-  //   <fieldset>
-  //     <p>Create a new bookmark:</p>
-  //       <input type='text' placeholder='Title'>
-  //       <p>Star rating:</p>
-  //       <input type='radio' name='rating' value='1 star'> 1 
-  //       <input type='radio' name='rating' value='2 stars'> 2
-  //       <input type='radio' name='rating' value='3 stars'> 3
-  //       <input type='radio' name='rating' value='4 stars'> 4
-  //       <input type='radio' name='rating' value='5 stars'> 5 <br>
-  //       <input type='text' placeholder='Description'> <br>
-  //       <input type='text' placeholder='URL'> <br>
-  //       <input type='submit'>
-  //   </fieldset>
-  // </form>`;
-  // };
-
   const handleAddingBookmark = function () {
     // listen for when the user is inputting info for a new bookmark and assign input values to store
     $('.js-add-min-buttons').on('click', '.js-add-bookmark-button', event => {
       store.toggleIsAdding();
       console.log(store.isAdding);
       render();
-
     });
   };
 
   const handleSubmittedNewBookmark = function () {
     // listen for when the user is submitting info for a new bookmark
-    $('').submit( event => {
-      store.toggleIsAdding();
-      
+    $('.js-add-min-buttons').submit( event => {
+      event.preventDefault();
+      // console.log('hello');
+      let rating = $('input[type=radio][name=rating]:checked').val();
+      rating = parseInt(rating.split(' ')[0]);
+      // console.log(typeof rating);
+      const newBookmark = {
+        title: $('#js-title').val(),
+        url: $('#js-url').val(),
+        desc: $('#js-desc').val(),
+        rating: rating
+      };
+      // console.log(newBookmark);
+      api.createBookmark(newBookmark, item => {
+        console.log(item);
+        store.addBookmark(item);
+        store.toggleIsAdding();
+        render();
+      });
     });
   };
 
   const handleSelectingMinimumRating = function () {
     // listen for which min rating the user wants && filter
+    // Get the value from a dropdown select directly
+    // $("select#foo").val();
     $('');
   };
 

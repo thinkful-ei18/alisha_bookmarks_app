@@ -26,8 +26,18 @@ const api = function() {
     // console.log('hello');
   };
 
-  const createBookmark = function () {
+  const createBookmark = function (name, callback) {
     // POST store item to API
+    const newBookmark = JSON.stringify(name);
+
+    $.ajax({
+      url: `${BASE_URL}/bookmarks`,
+      method: 'POST',
+      contentType: 'application/json',
+      data: newBookmark,
+      success: callback,
+      error: error => console.log(error)
+    });
   };
 
   const deleteBookmark = function () {
