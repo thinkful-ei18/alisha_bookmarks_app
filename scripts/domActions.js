@@ -56,7 +56,7 @@ const domActions = function() {
 
     const addBookmarkButton = '<button class=\'js-add-bookmark-button\' type=\'button\'>Add Bookmark</button>';
 
-    const addingBookmarkForm = `<form>
+    const addingBookmarkForm = `<form id='js-add-form'>
     <fieldset>
       <p>Create a new bookmark:</p>
         <input id='js-title' type='text' placeholder='Title'>
@@ -72,23 +72,21 @@ const domActions = function() {
     </fieldset>
   </form>`;
     
-    const minimumRatingSelector = `<form name='minimumRating' action='' method="POST">
+    const minimumRatingSelector = `<form name='minimumRating'>
         <div>
-          <select>
-            <option value='minRating'>Minimum Rating</option>
+          <select id='js-minimum-rating'>
+            <option>Minimum Rating</option>
             <option value='1 star'>1 star</option>
             <option value='2 stars'>2 stars</option>
             <option value='3 stars'>3 stars</option>
             <option value='4 stars'>4 stars</option>
             <option value='5 stars'>5 stars</option>
-            <option value='clear'>Clear Ratings</option>
+            <option value='1 star'>View All</option>
           </select>`;
       
-    // $('.js-add-min-buttons').html(addBookmarkButton + minimumRatingSelector);
-    const htmlElements = generateBookmarkHtml(store.bookmarksList);
-    // $('.js-bookmarks').html(elements);
+    let chosenElements = store.bookmarksList.filter( item => item.rating >= store.minRating);
 
-
+    const htmlElements = generateBookmarkHtml(chosenElements);
 
     if (store.isAdding) {
       $('.js-add-min-buttons').html(addingBookmarkForm + minimumRatingSelector);
@@ -122,16 +120,16 @@ const domActions = function() {
     // listen for when the user is inputting info for a new bookmark and assign input values to store
     $('.js-add-min-buttons').on('click', '.js-add-bookmark-button', event => {
       store.toggleIsAdding();
-      console.log(store.isAdding);
+      // console.log(store.isAdding);
       render();
     });
   };
 
   const handleSubmittedNewBookmark = function () {
     // listen for when the user is submitting info for a new bookmark
-    $('.js-add-min-buttons').submit( event => {
+    $('.js-add-min-buttons').on('submit', '.js-add-bookmark-button', event => {
       event.preventDefault();
-      // console.log('hello');
+      console.log('hello');
       let rating = $('input[type=radio][name=rating]:checked').val();
       rating = parseInt(rating.split(' ')[0]);
       // console.log(typeof rating);
@@ -153,9 +151,18 @@ const domActions = function() {
 
   const handleSelectingMinimumRating = function () {
     // listen for which min rating the user wants && filter
-    // Get the value from a dropdown select directly
-    // $("select#foo").val();
-    $('');
+    $('.js-add-min-buttons').on('change', '#js-minimum-rating', event => {
+      console.log('changing');
+      let selectedRating = $('#js-minimum-rating').val();
+      selectedRating = parseInt(selectedRating.split(' ')[0]);
+      console.log(selectedRating);
+      // store.bookmarksList = store.bookmarksList.filter(item => item.rating >= selectedRating);
+      // let starRating = store.bookmarksList.filter(item => item.rating >= selectedRating);
+      // console.log(starRating);
+      store.minRating = selectedRating;
+      // store.bookmarksList.push(starRating);
+      render();
+    });
   };
 
   const handleDeleteBookmark = function () {

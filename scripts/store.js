@@ -57,7 +57,7 @@ const store = function() {
   return {
     bookmarksList: [],
     isAdding: false,
-    minRating: false,
+    minRating: 1,
 
     addBookmark,
     deleteBookmark,
