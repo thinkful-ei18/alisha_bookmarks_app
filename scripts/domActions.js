@@ -35,7 +35,7 @@ const domActions = function() {
       if (item.expanded) {
         return `<li data-item-id='${item.id}'>
         <h3 class='expandable'>${item.title}</h3>
-        <p>${ item.rating? item.rating : '' }</p>
+        <p>${item.rating} star(s)!</p>
         <p>${ item.desc ? item.desc : '' }</p>
         <p><a href='${item.url}' target='_blank'>Visit Website</a></p>
         <button class='js-delete-button' type='button'>Delete bookmark</button>
@@ -43,7 +43,7 @@ const domActions = function() {
       } else {
         return `<li data-item-id='${item.id}'>
         <h3 class='expandable'>${item.title}</h3>
-        <p>Figure out how to convert the rating into an image and how to write the html when the rating or description weren't included!</p>
+        <p>${item.rating} star(s)!</p>
       </li>`;
       }
     });
@@ -72,7 +72,7 @@ const domActions = function() {
     </fieldset>
   </form>`;
     
-    const minimumRatingSelector = `<form name='minimumRating'>
+    const minimumRatingSelector = `<form id='css-rating' name='minimumRating'>
         <div>
           <select id='js-minimum-rating'>
             <option>Minimum Rating</option>
@@ -89,59 +89,52 @@ const domActions = function() {
     const htmlElements = generateBookmarkHtml(chosenElements);
 
     if (store.isAdding) {
-      $('.js-add-min-buttons').html(addingBookmarkForm + minimumRatingSelector);
+      $('.js-add-min-buttons').html(minimumRatingSelector + addingBookmarkForm);
       $('.js-bookmarks').html(htmlElements);
     } 
     else {
-      $('.js-add-min-buttons').html(addBookmarkButton + minimumRatingSelector);
+      $('.js-add-min-buttons').html(minimumRatingSelector + addBookmarkButton);
       $('.js-bookmarks').html(htmlElements);
     }
   };
 
   const findBookmarkObject = function (id) {
-    // find the bookmark that matches the id from findID
+    // find the bookmark that matches the id provided
     return store.bookmarksList.find(item => item.id === id);
-    // console.log(store.bookmarksList.find(item => item.id = id));
   };
 
   const handleExpandBookmark = function () {
     // toggle expand property on store item and show new view
     $('.js-bookmarks').on('click', '.expandable', event => {
       let id = $(event.currentTarget).closest('li').data('item-id');
-      // console.log(id);
       let clickedBookmark = findBookmarkObject(id);
-      // console.log(clickedBookmark);
       store.expandBookmark(clickedBookmark);
       render();
     });
   };
 
   const handleAddingBookmark = function () {
-    // listen for when the user is inputting info for a new bookmark and assign input values to store
+    // listen for when the user clicks the add bookmark button
     $('.js-add-min-buttons').on('click', '.js-add-bookmark-button', event => {
       store.toggleIsAdding();
-      // console.log(store.isAdding);
       render();
     });
   };
 
   const handleSubmittedNewBookmark = function () {
-    // listen for when the user is submitting info for a new bookmark
+    // listen for when the user is submitting info for a new bookmark and assign input values to the api && store
     $('.js-add-min-buttons').on('submit', '.js-add-bookmark-button', event => {
       event.preventDefault();
       console.log('hello');
       let rating = $('input[type=radio][name=rating]:checked').val();
       rating = parseInt(rating.split(' ')[0]);
-      // console.log(typeof rating);
       const newBookmark = {
         title: $('#js-title').val(),
         url: $('#js-url').val(),
         desc: $('#js-desc').val(),
         rating: rating
       };
-      // console.log(newBookmark);
       api.createBookmark(newBookmark, item => {
-        console.log(item);
         store.addBookmark(item);
         store.toggleIsAdding();
         render();
@@ -152,15 +145,9 @@ const domActions = function() {
   const handleSelectingMinimumRating = function () {
     // listen for which min rating the user wants && filter
     $('.js-add-min-buttons').on('change', '#js-minimum-rating', event => {
-      console.log('changing');
       let selectedRating = $('#js-minimum-rating').val();
       selectedRating = parseInt(selectedRating.split(' ')[0]);
-      console.log(selectedRating);
-      // store.bookmarksList = store.bookmarksList.filter(item => item.rating >= selectedRating);
-      // let starRating = store.bookmarksList.filter(item => item.rating >= selectedRating);
-      // console.log(starRating);
       store.minRating = selectedRating;
-      // store.bookmarksList.push(starRating);
       render();
     });
   };
@@ -169,7 +156,6 @@ const domActions = function() {
     //listen for when the user wants to delete a bookmark
     $('.js-bookmarks').on('click', '.js-delete-button', event => {
       let deletedId = $(event.currentTarget).closest('li').data('item-id');
-      // console.log(id);
       api.deleteBookmark(deletedId, () => {
         store.deleteBookmark(deletedId);
         render();
@@ -185,6 +171,7 @@ const domActions = function() {
     handleSelectingMinimumRating();
     handleDeleteBookmark();
   };
+
 
   return {
     render,

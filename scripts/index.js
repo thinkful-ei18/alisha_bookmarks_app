@@ -23,14 +23,10 @@
 */
 
 $(document).ready(function () {
+  // call to the API and get the current data. 
   domActions.allEventListeners();
-  // domActions.render();
-  // call to the API and get the current data. render page inside this function.
   api.retrieveBookmarks((bookmarks) => {
     bookmarks.forEach(bookmark => store.addBookmark(bookmark));
     domActions.render();
-    // domActions.generateBookmarkHtml(store.bookmarksList);
   });
-  
-  
 });

@@ -1,10 +1,44 @@
+main {
+  box-sizing: border-box;
+}
+
 body {
   margin: 72px;
+  background-color:#EDF5E1;
 }
 
 h1 {
-  color: navy;
+  color: #379683;
   position: relative;
+  margin-left: 15px;
+  font-size: 50px;
+}
+
+h3 {
+  color: #EDF5E1;
+}
+
+p {
+  color: #EDF5E1;
+}
+
+a {
+  color: #EDF5E1;
+}
+
+/* ul {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+} */
+
+li {
+  border-radius: 8px;
+  display: inline-block;
+  padding: 15px;
+  margin: 20px 20px 40px 0;
+  width: 25%;
+  background-color: #379683;
 }
 
 .logo {
@@ -12,16 +46,29 @@ h1 {
   float: left;
 }
 
-li {
-  border: 3px solid black;
-  border-radius: 8px;
-  display: inline-block;
-  padding: 10px;
-  margin: 0 20px 20px 0;
-}
-
 .button {
   background-color: white;
   padding: 8px;
   margin: 50px 50px 50px 0;
+}
+
+.js-add-min-buttons {
+  display: inline-block;
+}
+
+  .js-add-bookmark-button, #js-add-form {
+  float: left;
+}
+
+#css-rating {
+  clear: right;
+}
+
+#js-add-form {
+  background-color: #379683;
+}
+
+#js-minimum-rating {
+  float: right;
+  margin-left: 30px;
 }

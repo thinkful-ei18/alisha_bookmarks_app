@@ -23,11 +23,9 @@ const store = function() {
  * @param {object} bookmark 
  */
   const addBookmark = function(bookmark) {
-    //push bookmarks to the store array from form on dom
-    // console.log(bookmark);
+    // push bookmarks to the store array 
     bookmark.expanded = false;
     store.bookmarksList.push(bookmark);
-    // console.log(store.bookmarksList);
   };
 
   const deleteBookmark = function (deletedId) {
@@ -36,21 +34,16 @@ const store = function() {
   };  
 
   const expandBookmark = function (clickedBookmark) {
+    // show detailed view of the chosen bookmark
     if (clickedBookmark.expanded === false) {
       clickedBookmark.expanded = true;
     } else {
       clickedBookmark.expanded = false;
     }
-    // console.log(clickedBookmark.expanded);
   };
 
   const toggleIsAdding = function() {
     this.isAdding = !this.isAdding;
-  };
-
-  const toggleMinRating = function() {
-    // no need to toggle
-    this.minRating = !this.minRating;
   };
 
 
@@ -63,10 +56,10 @@ const store = function() {
     deleteBookmark,
     expandBookmark,
     toggleIsAdding,
-    // toggleMinRating
   };
 
 }();
+
 
 
 
@@ -83,6 +76,8 @@ items to add back to store since the page refreshes every 24 hours:
 {
   "title": "Harry Potter and the Prisoner of Azkaban",
   "url": "http://www.imdb.com/title/tt0304141/",
+  "desc": "It's Harry's third year at Hogwarts; not only does he have a new "Defense Against the Dark Arts" teacher, but there is also trouble brewing. Convicted murderer Sirius Black has escaped the Wizards' Prison and is coming after Harry."
+  "rating": 4
 }
 
 {

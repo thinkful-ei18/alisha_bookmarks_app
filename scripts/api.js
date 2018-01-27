@@ -14,16 +14,15 @@ const api = function() {
 
   const retrieveBookmarks = function(callback) {
     // GET all store items from API
-    // console.log(callback);
 
     // AJAX GET doesn't need a dataType field.
+    // GET is also the default method
     $.ajax({
       url: `${BASE_URL}/bookmarks`,
       method: 'GET',
       success: callback,
       error: error => console.log(error)
     });
-    // console.log('hello');
   };
 
   const createBookmark = function (name, callback) {
@@ -51,6 +50,7 @@ const api = function() {
     });
   };
 
+  
   return {
     retrieveBookmarks,
     createBookmark,
