@@ -56,16 +56,14 @@ li {
   display: inline-block;
 }
 
-  .js-add-bookmark-button, #js-add-form {
+.js-add-bookmark-button, #js-add-form {
   float: left;
+  margin-left: 50px;
 }
 
 #css-rating {
-  clear: right;
-}
-
-#js-add-form {
-  background-color: #379683;
+  float: right;
+  margin-left: 150px;
 }
 
 #js-minimum-rating {

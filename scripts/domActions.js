@@ -82,18 +82,20 @@ const domActions = function() {
             <option value='4 stars'>4 stars</option>
             <option value='5 stars'>5 stars</option>
             <option value='1 star'>View All</option>
-          </select>`;
+          </select>
+          </div>
+          </form>`;
       
     let chosenElements = store.bookmarksList.filter( item => item.rating >= store.minRating);
 
     const htmlElements = generateBookmarkHtml(chosenElements);
 
     if (store.isAdding) {
-      $('.js-add-min-buttons').html(minimumRatingSelector + addingBookmarkForm);
+      $('.js-add-min-buttons').html(addingBookmarkForm + minimumRatingSelector);
       $('.js-bookmarks').html(htmlElements);
     } 
     else {
-      $('.js-add-min-buttons').html(minimumRatingSelector + addBookmarkButton);
+      $('.js-add-min-buttons').html(addBookmarkButton + minimumRatingSelector);
       $('.js-bookmarks').html(htmlElements);
     }
   };
@@ -123,9 +125,8 @@ const domActions = function() {
 
   const handleSubmittedNewBookmark = function () {
     // listen for when the user is submitting info for a new bookmark and assign input values to the api && store
-    $('.js-add-min-buttons').on('submit', '.js-add-bookmark-button', event => {
+    $('.js-add-min-buttons').on('submit', '#js-add-form', event => {
       event.preventDefault();
-      console.log('hello');
       let rating = $('input[type=radio][name=rating]:checked').val();
       rating = parseInt(rating.split(' ')[0]);
       const newBookmark = {
